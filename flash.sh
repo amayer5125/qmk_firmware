@@ -6,21 +6,21 @@
 
 # ensure filename was passed
 if [ -z ${1+x} ]; then
-    echo "error: missing binary file to flash to keyboard"
-    echo "usage: $0 <binary file>"
+    echo "error: missing binary file to flash to keyboard" >&2
+    echo "usage: $0 <binary file>" >&2
     exit 1
 fi
 
 # ensure file exists
 if [ ! -f "$1" ]; then
-    echo "error: file '$1' does not exist"
-    echo "usage: $0 <binary file>"
+    echo "error: file '$1' does not exist" >&2
+    echo "usage: $0 <binary file>" >&2
     exit 1
 fi
 
 # ensure script is running as root
 if [[ $EUID -ne 0 ]]; then
-  echo "This script should be run as root" 2>&1
+  echo "This script should be run as root" >&2
   exit 1
 fi
 
