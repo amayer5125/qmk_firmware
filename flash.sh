@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # this is a script used to flash plank rev6 keyboards
-# first build the binary file (.bin) by running
-# make planck/rev6:default
+# see keyboards/planck/keymaps/amayer/readme.md
 
 # ensure filename was passed
 if [ -z ${1+x} ]; then
@@ -24,14 +23,6 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-echo "Preparing to flash firmware. Please enter bootloader now!"
-COUNTDOWN=5
-while [[ $COUNTDOWN -ge 1 ]]; do
-    echo -ne "\rFlashing in $COUNTDOWN...\033[0K"
-    sleep 1
-    ((COUNTDOWN = COUNTDOWN - 1))
-done
-echo -e "\rFlashing '$1'"
-
 # flash plank keyboard
-dfu-util -d 0483:df11 -a 0 -s 0x08000000:leave -D "$1"
+# details found using `dfu-util --list`
+dfu-util -w -d 0483:df11 -a 0 -s 0x08000000:leave -D "$1"

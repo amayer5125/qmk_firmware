@@ -18,7 +18,7 @@ make clean
 Build the firmware in a docker container
 
 ```sh
-docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/qmk_firmware:rw" -w /qmk_firmware qmkfm/base_container make planck/rev6:amayer
+docker run --rm -it -v "$PWD:/qmk_firmware" qmkfm/qmk_firmware qmk compile -c -kb planck/rev6 -km amayer
 ```
 
 ## Flashing
