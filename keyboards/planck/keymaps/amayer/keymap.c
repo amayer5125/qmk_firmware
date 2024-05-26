@@ -18,13 +18,29 @@
 
 enum planck_layers {
   _QWERTY,
+  _QWERTYHOME,
   _LOWER,
   _RAISE,
   _ADJUST
 };
 
+enum planck_keycodes {
+  QWERTY = SAFE_RANGE,
+  QWERTYHOME
+};
+
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
+// Left-hand home row mods
+#define HOME_A LGUI_T(KC_A)
+#define HOME_S LALT_T(KC_S)
+#define HOME_D LCTL_T(KC_D)
+#define HOME_F LSFT_T(KC_F)
+// Right-hand home row mods
+#define HOME_J RSFT_T(KC_J)
+#define HOME_K RCTL_T(KC_K)
+#define HOME_L RALT_T(KC_L)
+#define HOME_SCLN RGUI_T(KC_SCLN)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -36,14 +52,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Shift |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Ctrl | Alt  | Ctrl | GUI  |Lower |Space |Enter |Raise | Left | Down |  Up  |Right |
+ * | Ctrl | Ctrl | GUI  | Alt  |Lower |Space |Enter |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_planck_grid(
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
     KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-    KC_LCTL, KC_LALT, KC_RCTL, KC_LGUI, LOWER,   KC_SPC,  KC_ENT,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+    KC_LCTL, KC_RCTL, KC_LGUI, KC_LALT, LOWER,   KC_SPC,  KC_ENT,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+),
+
+/* Qwerty Homerow Mods
+ * ,-----------------------------------------------------------------------------------.
+ * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Esc  |GUI/A |ALT/S |CTRL/D|SHFT/F|   G  |   H  |SHFT/J|CTRL/K|ALT/L |GUI/; |  '   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Shift |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Ctrl | Ctrl | GUI  | Alt  |Lower |Space |Enter |Raise | Left | Down |  Up  |Right |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_QWERTYHOME] = LAYOUT_planck_grid(
+    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,      KC_BSPC,
+    KC_ESC,  HOME_A,  HOME_S,  HOME_D,  HOME_F,  KC_G,    KC_H,    HOME_J,  HOME_K,  HOME_L,  HOME_SCLN, KC_QUOT,
+    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,   KC_RSFT,
+    KC_LCTL, KC_RCTL, KC_LGUI, KC_LALT, LOWER,   KC_SPC,  KC_ENT,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,     KC_RGHT
 ),
 
 /* Lower
@@ -90,18 +124,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |      | Play |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Boot |      |      |      |      |      |      |      |      |      |      |      |
+ * | Boot |      |      |      |      |      |      |      |      |      |HomeRo|Qwerty|
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_planck_grid(
-    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-    _______, KC_F11,  KC_F12,  _______, KC_PSCR, _______, _______, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, _______,
-    _______, _______, _______, _______, _______, _______, _______, KC_MPLY, _______, _______, _______, _______,
-    QK_BOOT, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,     _______,
+    _______, KC_F11,  KC_F12,  _______, KC_PSCR, _______, _______, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT,    _______,
+    _______, _______, _______, _______, _______, _______, _______, KC_MPLY, _______, _______, _______,    _______,
+    QK_BOOT, _______, _______, _______, _______, _______, _______, _______, _______, _______, QWERTYHOME, QWERTY
 )
 
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case QWERTY:
+      if (record->event.pressed) {
+        set_single_persistent_default_layer(_QWERTY);
+      }
+      return false;
+      break;
+    case QWERTYHOME:
+      if (record->event.pressed) {
+        set_single_persistent_default_layer(_QWERTYHOME);
+      }
+      return false;
+      break;
+  }
+  return true;
 }
