@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this is a script used to flash plank rev6 keyboards
+# this is a script used to flash STM32 based keyboards like the Planck and Preonic
 # see keyboards/planck/keymaps/amayer/readme.md
 
 # ensure filename was passed
@@ -23,6 +23,5 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-# flash plank keyboard
-# details found using `dfu-util --list`
+# details found using `dfu-util --list` after putting keyboard in DFU mode (KC_BOOT)
 dfu-util -w -d 0483:df11 -a 0 -s 0x08000000:leave -D "$1"
