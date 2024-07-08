@@ -5,20 +5,22 @@
 Install dependancies and fetch a fresh version of the qmk image
 
 ```sh
-make git-submodule
-docker pull qmkfm/base_container
+git submodule update --recursive
+podman pull ghcr.io/qmk/qmk_cli
 ```
 
 Cleanup old build artifacts
 
 ```sh
-make clean
+podman run --rm -v "$(pwd):/qmk_firmware:z" -w /qmk_firmware ghcr.io/qmk/qmk_cli make clean
 ```
 
-Build the firmware in a docker container
+Build the firmware in a container
 
 ```sh
-docker run --rm -it -v "$PWD:/qmk_firmware" qmkfm/qmk_firmware qmk compile -c -kb planck/rev6 -km amayer
+util/docker_build.sh planck/rev6:amayer
+# to flash as well
+util/docker_build.sh planck/rev6:amayer:flash
 ```
 
 ## Flashing
